@@ -1,15 +1,33 @@
-void aprobadosReprobados(float *cal, int n)
+#include <stdio.h>
+#include "notas.h"
+
+int main()
 {
-    printf("\n--- APROBADOS Y REPROBADOS POR ASIGNATURA ---\n");
-    for (int j = 0; j < ASIGNATURAS; j++)
-    {
-        int aprobados = 0, reprobados = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (*(cal + i * ASIGNATURAS + j) >= 6) aprobados++;
-            else reprobados++;
+    struct Registro registros[MAX_REGISTROS];
+    int total = cargarDesdeArchivo(registros, "notas.csv");
+    int opcion;
+
+    do {
+        printf("\n=== GESTION DE NOTAS ===\n");
+        printf("1. Registrar materia\n");
+        printf("2. Listar materias\n");
+        printf("3. Promedio por estudiante\n");
+        printf("4. Aprobados/Reprobados\n");
+        printf("5. Guardar cambios\n");
+        printf("6. Salir\n");
+        printf("Opcion: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1: registrarMateria(registros, &total); break;
+            case 2: listarMaterias(registros, total); break;
+            case 3: promedioPorEstudiante(registros, total); break;
+            case 4: aprobadosReprobados(registros, total, 6); break;
+            case 5: guardarEnArchivo(registros, total, "notas.csv"); break;
         }
-        printf("Asignatura %d -> Aprobados: %d | Reprobados: %d\n",
-               j + 1, aprobados, reprobados);
-    }
+    } while (opcion != 6);
+
+    guardarEnArchivo(registros, total, "notas.csv"); // guardado automatico al salir
+    printf("Programa finalizado.\n");
+    return 0;
 }
