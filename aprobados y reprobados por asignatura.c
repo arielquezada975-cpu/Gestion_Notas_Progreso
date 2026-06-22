@@ -1,16 +1,11 @@
-void ingresarCalificaciones(float *cal, int n)
+// Calcula cuantos estudiantes aprobaron o reprobaron cada materia
+void aprobadosReprobados(struct Registro *reg, int total, float umbral)
 {
-    for (int i = 0; i < n; i++)
+    printf("\n--- APROBADOS Y REPROBADOS (umbral %.1f) ---\n", umbral);
+    for (int i = 0; i < total; i++)
     {
-        printf("\nEstudiante %d:\n", i + 1);
-        for (int j = 0; j < ASIGNATURAS; j++)
-        {
-            do {
-                printf("  Asignatura %d: ", j + 1);
-                scanf("%f", (cal + i * ASIGNATURAS + j));
-                if (*(cal + i * ASIGNATURAS + j) < 0 || *(cal + i * ASIGNATURAS + j) > 10)
-                    printf("  Error: debe estar entre 0 y 10\n");
-            } while (*(cal + i * ASIGNATURAS + j) < 0 || *(cal + i * ASIGNATURAS + j) > 10);
-        }
+        float final = calcularNotaFinal(reg + i);
+        printf("%s (%s) -> %s\n", (reg+i)->nombre_estudiante, (reg+i)->codigo_materia,
+               final >= umbral ? "APROBADO" : "REPROBADO");
     }
 }
